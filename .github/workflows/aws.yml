@@ -8,10 +8,10 @@ on:
       - master
 
 env:
-  AWS_REGION: ap-south-1                   # set this to your preferred AWS region,  e.g. us-west-1
+  AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region,  e.g. us-west-1
   ECR_REPOSITORY: frontend
-  AWS_ACCESS_KEY_ID: AKIAZKZV43ELYK5X6FVJ
-  AWS_SECRET_ACCESS_KEY: pgM0HHkH8LHfp1TDvGKe+6seI3Ph/9ZPM7mKrWAh
+  AWS_ACCESS_KEY_ID: MY_ECS_ACCESS_ID
+  AWS_SECRET_ACCESS_KEY: MY_ECS_ACCESS_KEY
   
 
 jobs:
