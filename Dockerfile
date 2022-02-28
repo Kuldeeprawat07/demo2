@@ -12,5 +12,3 @@ RUN npm run build --prod
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html/
 RUN rm -rf ./*
-COPY --from=build /app/dist/betternight .
-COPY --from=build /app/nginx.conf  /etc/nginx/conf.d/default.conf
