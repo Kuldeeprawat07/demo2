@@ -8,6 +8,7 @@ COPY . .
 RUN npm run build --prod
 
 # Stage 2
+#aasdddd
 # nginx state for serving content
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html/
