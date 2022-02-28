@@ -33,15 +33,34 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+      - run:
+          name: Setup Env variables
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              echo 'export TAG=${CIRCLE_BRANCH}.0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            elif [ "${CIRCLE_BRANCH}" == "release" ]; then
+              echo 'export TAG=${CIRCLE_BRANCH}.0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            elif [ "${CIRCLE_BRANCH}" == "stage" ]; then
+              echo 'export TAG=${CIRCLE_BRANCH}.0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo 'export TAG=${CIRCLE_BRANCH}.0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            else
+              echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            fi
+            echo 'export IMAGE_NAME=tampa_rest' >> $BASH_ENV
+      - run:
+          name: Show Env variables and build docker image
+          command: |
+            echo $CIRCLE_BRANCH
+            echo $TAG > build.tag
+            echo $IMAGE_NAME
+            docker build -t $IMAGE_NAME:$TAG .
+      - run:
+          name: Docker push image 
+          command: |
+            docker image ls            
+            docker login $REGISTRY_HOST:$REGISTRY_PORT  --username $REGISTRY_USER --password $REGISTRY_PASS 
+            docker tag $IMAGE_NAME:$TAG $REGISTRY_HOST:$REGISTRY_PORT/$REGISTRY_USER/$IMAGE_NAME:$TAG
+            docker push $REGISTRY_HOST:$REGISTRY_PORT/$REGISTRY_USER/$IMAGE_NAME:$TAG
+            docker tag $IMAGE_NAME:$TAG $REGISTRY_HOST:$REGISTRY_PORT/$REGISTRY_USER/$IMAGE_NAME:latest
+            docker push $REGISTRY_HOST:$REGISTRY_PORT/$REGISTRY_USER/$IMAGE_NAME:latest
