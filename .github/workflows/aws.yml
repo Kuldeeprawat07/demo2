@@ -8,10 +8,10 @@ on:
       - master
 
 env:
- # AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region,  e.g. us-west-1
+  AWS_REGION: ${{ secrets.MY_AWS_REGION }}                 # set this to your preferred AWS region,  e.g. us-west-1
   ECR_REPOSITORY: frontend
-  AWS_ACCESS_KEY_ID: MY_ECS_ACCESS_ID
-  AWS_SECRET_ACCESS_KEY: MY_ECS_ACCESS_KEY
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   
 
 jobs:
