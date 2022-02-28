@@ -1,4 +1,3 @@
-
 name: Deploy to Amazon ECS
 
 on:
@@ -39,20 +38,9 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        #IMAGE_TAG: ${GITHUBREF##*/}}.{{github.run_number}}  
+        IMAGE_TAG: ${{GITHUBREF##*/}}.${{github.run_number}}
+        
       run: |
-        if [ "${GITHUBREF##*/}" == "develop" ]; then
-              echo 'export TAG=${GITHUBREF##*/}.${github.run_number}' >> $BASH_ENV
-            elif [ "${GITHUBREF##*/}" == "release" ]; then
-              echo 'export TAG=${GITHUBREF##*/}.${github.run_number}' >> $BASH_ENV
-            elif [ "${GITHUBREF##*/}" == "stage" ]; then
-              echo 'export TAG=${GITHUBREF##*/}.${github.run_number}' >> $BASH_ENV
-            elif [ "${GITHUBREF##*/}" == "master" ]; then
-              echo 'export TAG=${GITHUBREF##*/}.${github.run_number}' >> $BASH_ENV
-            else
-              echo 'export TAG=0.1.${GITHUBREF##*/}' >> $BASH_ENV
-            fi
-            echo 'export IMAGE_NAME=custom' >> $BASH_ENV
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
