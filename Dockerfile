@@ -3,9 +3,9 @@ FROM node:14.19.0-alpine as build
 RUN mkdir -p /app
 WORKDIR /app
 COPY package.json /app/
-RUN npm install
+#RUN npm install
 COPY . .
-RUN npm run build --prod
+#RUN npm run build --prod
 
 # Stage 2
 # nginx state for serving content
