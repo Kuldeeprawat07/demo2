@@ -45,5 +45,5 @@ jobs:
         # be deployed to ECS.
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}-${github.run_number} .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}-${github.run_number}
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}-${github.run_number}"
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}${github.run_number}"
 
