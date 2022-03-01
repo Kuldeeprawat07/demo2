@@ -1,0 +1,48 @@
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+
+env:
+  AWS_REGION: ${{ secrets.MY_AWS_REGION }}                 # set this to your preferred AWS region,  e.g. us-west-1
+  ECR_REPOSITORY: ${{ secrets.MY_ECR_REPOSITORY }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.MY_ECS_ACCESS_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.MY_ECS_ACCESS_KEY }}
+  
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.MY_AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        #IMAGE_TAG: $GITHUB_REF##*/
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/} .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}"
