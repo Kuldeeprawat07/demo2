@@ -9,6 +9,7 @@ RUN npm run build --prod
 
 # Stage 2
 #aasdddd
+#fhcfcchcgfgcf
 #fgfhg
 #njbjkbjkbfvkjbdjkbgjkdbjkdfjkgbdfkj
 # nginx state for serving content
