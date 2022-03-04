@@ -9,8 +9,9 @@ RUN npm run build --prod
 
 # Stage 2
 #aasdddd
-#fhcfcchcgfgcf
+#fhcfcchcgfgcflew,w,l;w,;w
 #fgfhg
+#kfmrlkfkemfelm
 #njbjkbjkbfvkjbdjkbgjkdbjkdfjkgbdfkj
 # nginx state for serving content
 FROM nginx:alpine
