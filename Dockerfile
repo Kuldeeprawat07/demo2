@@ -6,6 +6,7 @@ COPY package.json /app/
 #RUN npm install
 COPY . .
 #RUN npm run build --prod
+#ksndfnslfsnsl
 
 # Stage 2
 # nginx state for serving content
