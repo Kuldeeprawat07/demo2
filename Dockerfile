@@ -9,6 +9,7 @@ COPY . .
 #ksndfnslfsnsl
 
 # Stage 2
+#knweknfkw
 # nginx state for serving content
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html/
