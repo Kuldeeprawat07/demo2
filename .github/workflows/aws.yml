@@ -8,6 +8,7 @@ on:
       - master
       - kuldeep
       - releases/*
+      - release/*
 
 env:
   AWS_REGION: ${{ secrets.MY_AWS_REGION }}                 
