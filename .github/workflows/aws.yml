@@ -6,6 +6,7 @@ on:
     branches:
       - develop
       - master
+      - kuldeep
       - releases/*
 
 env:
@@ -36,15 +37,13 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Extract Git Tag
+      run: echo "GIT_TAG=${GITHUB_REF##*/}${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
     - name: Build, tag, and push image to Amazon ECR
-      id: build-image
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        #IMAGE_TAG: $GITHUB_REF##*/
+         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+         #ECR_REPOSITORY: reponame
+         IMAGE_TAG: ${{ env.GIT_TAG }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build --tag $ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/} .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:${GITHUB_REF##*/}"
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
