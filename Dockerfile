@@ -7,6 +7,7 @@ COPY package.json /app/
 COPY . .
 #RUN npm run build --prod
 #bdfsbfjsbjkbfjksbj
+#jjnfw
 
 # Stage 2
 # nginx state for serving content
