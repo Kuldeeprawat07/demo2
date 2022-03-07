@@ -10,6 +10,7 @@ COPY . .
 
 # Stage 2
 #knweknfkw
+#jndskjs
 # nginx state for serving content
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html/
