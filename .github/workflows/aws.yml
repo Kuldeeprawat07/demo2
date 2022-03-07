@@ -40,7 +40,7 @@ jobs:
       run: env
 
     - name: Extract Git Tag
-      run: echo "GIT_TAG=${GITHUB_REF_NAME}-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
+      run: echo "GIT_TAG=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
     - name: Build, tag, and push image to Amazon ECR
       env:
          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
